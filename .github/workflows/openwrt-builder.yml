@@ -15,7 +15,11 @@ name: OpenWrt Builder
 on:
   repository_dispatch:
   workflow_dispatch:
-
+    inputs:
+      ssh:
+        description: 'Enable SSH to debug'
+        required: false
+        default: false
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
@@ -35,7 +39,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
-
+   - name: SSH connection to Actions
+  if: inputs.ssh == 'true'
+  uses: something/ssh-action@v1
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
